@@ -511,9 +511,9 @@ public class OpenSearchNode implements TestClusterConfiguration {
 
         logToProcessStdout("Creating opensearch keystore with password set to [" + keystorePassword + "]");
         if (keystorePassword.length() > 0) {
-            runOpenSearchBinScriptWithInput(keystorePassword + "\n" + keystorePassword, "opensearch-keystore", "create", "-p");
+             runOpenSearchBinScriptWithInput(keystorePassword + "\n" + keystorePassword, "elasticsearch-keystore", "create", "-p");
         } else {
-            runOpenSearchBinScript("opensearch-keystore", "-v", "create");
+            runOpenSearchBinScript("elasticsearch-keystore", "-v", "create");
         }
 
         if (keystoreSettings.isEmpty() == false || keystoreFiles.isEmpty() == false) {
@@ -708,7 +708,7 @@ public class OpenSearchNode implements TestClusterConfiguration {
 
     private void runKeystoreCommandWithPassword(String keystorePassword, String input, CharSequence... args) {
         final String actualInput = keystorePassword.length() > 0 ? keystorePassword + "\n" + input : input;
-        runOpenSearchBinScriptWithInput(actualInput, "opensearch-keystore", args);
+        runOpenSearchBinScriptWithInput(actualInput, "elasticsearch-keystore", args);
     }
 
     private void runOpenSearchBinScript(String tool, CharSequence... args) {

@@ -372,6 +372,9 @@ public class BwcVersions {
             // add 6.x compatible for OpenSearch 1.0.0
             return unmodifiableList(Stream.concat(groupByMajor.get(prevMajor - 1).stream(), result.stream()).collect(Collectors.toList()));
         }
+        for (Version v : result) {
+            System.out.println("Harold getIndexCompatible : " + v.toString());
+        }
         return unmodifiableList(result);
     }
 
@@ -382,6 +385,7 @@ public class BwcVersions {
         List<Version> lastMajorList = groupByMajor.get(lastMajor);
         int minor = lastMajorList.get(lastMajorList.size() - 1).getMinor();
         for (int i = lastMajorList.size() - 1; i > 0 && lastMajorList.get(i).getMinor() == minor; --i) {
+            System.out.println("Harold: " + lastMajorList.get(i).toString());
             wireCompat.add(lastMajorList.get(i));
         }
 
@@ -389,13 +393,16 @@ public class BwcVersions {
         if (currentMajor == 1) {
             List<Version> previousMajor = groupByMajor.get(7);
             for (Version v : previousMajor) {
+                System.out.println("Harold: " + v.toString());
                 wireCompat.add(v);
             }
         }
         wireCompat.addAll(groupByMajor.get(currentMajor));
         wireCompat.remove(currentVersion);
         wireCompat.sort(Version::compareTo);
-
+        for (Version v : wireCompat) {
+            System.out.println("Harold getWireCompatible : " + v.toString());
+        }
         return unmodifiableList(wireCompat);
     }
 

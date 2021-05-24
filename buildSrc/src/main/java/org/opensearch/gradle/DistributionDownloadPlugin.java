@@ -36,6 +36,7 @@ import org.opensearch.gradle.OpenSearchDistribution.Platform;
 import org.opensearch.gradle.OpenSearchDistribution.Type;
 import org.opensearch.gradle.docker.DockerSupportPlugin;
 import org.opensearch.gradle.docker.DockerSupportService;
+import org.opensearch.gradle.info.BuildParams;
 import org.opensearch.gradle.transform.SymbolicLinkPreservingUntarTransform;
 import org.opensearch.gradle.transform.UnzipTransform;
 import org.opensearch.gradle.util.GradleUtils;
@@ -156,7 +157,11 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
             repo.setName(name);
             repo.setUrl(url);
             repo.metadataSources(IvyArtifactRepository.MetadataSources::artifact);
-            repo.patternLayout(layout -> layout.artifact("/releases/core/opensearch/[revision]/[module]-[revision](-[classifier]).[ext]"));
+            //repo.patternLayout(layout -> layout.artifact("/releases/core/elasticsearch/[revision]/[module]-[revision](-[classifier]).[ext]"));
+            //repo.patternLayout(layout -> layout.artifact("/releases/core/elasticsearch/[revision]/elasticsearch-[revision](-[classifier]).[ext]"));
+            repo.patternLayout(layout -> layout.artifact("/downloads/elasticsearch/elasticsearch-[revision]-darwin-x86_64.[ext]"));
+            //repo.patternLayout(layout -> layout.artifact("/downloads/elasticsearch/[module]-[revision](-x86_64).[ext]"));
+
         });
         project.getRepositories().exclusiveContent(exclusiveContentRepository -> {
             exclusiveContentRepository.filter(config -> config.includeGroup(group));
@@ -168,8 +173,10 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         if (project.getRepositories().findByName(DOWNLOAD_REPO_NAME) != null) {
             return;
         }
-        addIvyRepo(project, DOWNLOAD_REPO_NAME, "https://artifacts.opensearch.org", FAKE_IVY_GROUP);
-        addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://snapshots-no-kpi.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP);
+         if (VersionProperties.getOpenSearchVersion().onOrAfter("1.0.0") ) {
+            addIvyRepo(project, DOWNLOAD_REPO_NAME, "https://artifacts.elastic.co", FAKE_IVY_GROUP);
+            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://snapshots-no-kpi.elastic.co", FAKE_SNAPSHOT_IVY_GROUP);
+       }
     }
 
     /**

@@ -33,6 +33,7 @@
 package org.opensearch.gradle.internal;
 
 import org.apache.commons.io.FileUtils;
+import org.opensearch.gradle.BwcVersions;
 import org.opensearch.gradle.LoggedExec;
 import org.opensearch.gradle.info.GlobalBuildInfoPlugin;
 import org.gradle.api.Action;
@@ -40,6 +41,7 @@ import org.gradle.api.GradleException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.logging.Logger;
+import org.opensearch.gradle.info.BuildParams;
 import org.gradle.api.plugins.ExtraPropertiesExtension;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
@@ -104,7 +106,7 @@ public class InternalBwcGitPlugin implements Plugin<Project> {
             // for testing only we can override the base remote url
             String remoteRepoUrl = providerFactory.systemProperty("testRemoteRepo")
                 .forUseAtConfigurationTime()
-                .getOrElse("https://github.com/" + remoteRepo + "/OpenSearch.git");
+                .getOrElse("https://github.com/" + remoteRepo + "/elasticsearch.git");
             addRemote.setCommandLine(asList("git", "remote", "add", remoteRepo, remoteRepoUrl));
         });
 

@@ -39,7 +39,7 @@ apply from : "$rootDir/gradle/bwc-test.gradle"
 
 for (Version bwcVersion : BuildParams.bwcVersions.indexCompatible) {
   String baseName = "v${bwcVersion}"
-
+  logger.error("baseName:  " + baseName)
   testClusters {
     "${baseName}" {
       versions = [bwcVersion.toString(), project.version]
